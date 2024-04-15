@@ -19,7 +19,7 @@ export default async function createNFTWithEmbeddedMetadata(inputs: CreateNFTInp
         symbol: tokenSymbol,
         uri: tokenUri,
         // additionalMetadata: [['customField', 'customValue']],
-        additionalMetadata: Object.entries(tokenAdditionalMetadata).map(([key, value]) => [key, value]),
+        additionalMetadata: Object.entries(tokenAdditionalMetadata ?? {}).map(([key, value]) => [key, value]),
     };
 
     // 2. Allocate the mint
@@ -66,7 +66,7 @@ export default async function createNFTWithEmbeddedMetadata(inputs: CreateNFTInp
 
     // 6. Set the additional metadata in the mint
     const setExtraMetadataInstructions = [];
-    for (const attributes of Object.entries(tokenAdditionalMetadata)) {
+    for (const attributes of Object.entries(tokenAdditionalMetadata ?? {})) {
         setExtraMetadataInstructions.push(
             createUpdateFieldInstruction({
                 updateAuthority: payer.publicKey,

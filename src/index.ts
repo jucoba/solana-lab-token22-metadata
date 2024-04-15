@@ -7,9 +7,9 @@ dotenv.config();
 
 (async () => {
   const connection = new Connection(clusterApiUrl('devnet'), 'finalized');
-  const payer = await initializeKeypair(connection);
+  const payer = await initializeKeypair(connection, {keypairPath: '/Users/coach/.config/solana/id.json'});
 
-  const imagePath = 'src/cat.jpg';
+  const imagePath = 'src/cat.png';
   const tokenName = 'Cat NFT';
   const tokenDescription = 'This is a cat';
   const tokenSymbol = 'EMB';
@@ -26,7 +26,8 @@ dotenv.config();
     imagePath,
     tokenExternalUrl,
     tokenAdditionalMetadata,
-  });
+    metadataFileName: 'temp.json'
+  },payer);
 
   await createNFTWithEmbeddedMetadata({
     payer,

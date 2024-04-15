@@ -1,60 +1,81 @@
-import { Connection, Keypair } from '@solana/web3.js';
-import { NFTStorage, File } from 'nft.storage'
+import {clusterApiUrl, Connection, Keypair} from '@solana/web3.js'
+import Irys from '@irys/sdk'
 import fs from 'fs'
 import path from 'path'
-import dotenv from 'dotenv';
-dotenv.config();
-
-const NFT_STORAGE_API_KEY = process.env.NFT_STORAGE_API_KEY as string;
+import dotenv from 'dotenv'
+dotenv.config()
 
 export interface CreateNFTInputs {
-  payer: Keypair;
-  connection: Connection;
-  tokenName: string;
-  tokenSymbol: string;
-  tokenUri: string;
-  tokenAdditionalMetadata?: Record<string, string>;
+	payer: Keypair
+	connection: Connection
+	tokenName: string
+	tokenSymbol: string
+	tokenUri: string
+	tokenAdditionalMetadata?: Record<string, string>
 }
 
 export interface UploadOffChainMetadataInputs {
-  tokenName: string;
-  tokenSymbol: string;
-  tokenDescription: string;
-  tokenExternalUrl: string;
-  tokenAdditionalMetadata?: Record<string, string>;
-  imagePath: string;
+	tokenName: string
+	tokenSymbol: string
+	tokenDescription: string
+	tokenExternalUrl: string
+	tokenAdditionalMetadata?: Record<string, string>
+	imagePath: string
+	metadataFileName: string
 }
 
-async function fileFromPath(filePath: string) {
-  const content = await fs.promises.readFile(filePath)
-  return new File([content], path.basename(filePath))
+function formatIrysUrl(id: string) {
+	return `https://gateway.irys.xyz/${id}`
 }
 
-function formatIPFSUrl(url: string) {
-  return `https://${url}.ipfs.nftstorage.link`
+const getIrysArweave = async (secretKey: Uint8Array) => {
+	const irys = new Irys({
+		network: 'devnet',
+		token: 'solana',
+		key: secretKey,
+		config: {
+			providerUrl: clusterApiUrl('devnet'),
+		},
+	})
+	return irys
 }
 
-export async function uploadOffChainMetadata(inputs: UploadOffChainMetadataInputs) {
-  const { tokenName, tokenSymbol, tokenDescription, tokenExternalUrl, imagePath, tokenAdditionalMetadata } = inputs;
-  // load the file from disk
-  const image = await fileFromPath(imagePath)
+export async function uploadOffChainMetadata(
+	inputs: UploadOffChainMetadataInputs,
+	payer: Keypair
+) {
+	const {
+		tokenName,
+		tokenSymbol,
+		tokenDescription,
+		tokenExternalUrl,
+		imagePath,
+		tokenAdditionalMetadata,
+		metadataFileName,
+	} = inputs
 
-  const nftstorage = new NFTStorage({ token: NFT_STORAGE_API_KEY })
+	const irys = await getIrysArweave(payer.secretKey)
 
-  const imageUrl = await nftstorage.storeBlob(image);
+	const imageUploadReceipt = await irys.uploadFile(imagePath)
 
-  // NFT Standard Metadata
-  const metadata = {
-    name: tokenName,
-    symbol: tokenSymbol,
-    description: tokenDescription,
-    external_url: tokenExternalUrl,
-    image: formatIPFSUrl(imageUrl),
-    attributes: Object.entries(tokenAdditionalMetadata || []).map(([trait_type, value]) => ({ trait_type, value })),
-  }
+	const metadata = {
+		name: tokenName,
+		symbol: tokenSymbol,
+		description: tokenDescription,
+		external_url: tokenExternalUrl,
+		image: formatIrysUrl(imageUploadReceipt.id),
+		attributes: Object.entries(tokenAdditionalMetadata || []).map(
+			([trait_type, value]) => ({trait_type, value})
+		),
+	}
 
-  const metadataBlob = new Blob([JSON.stringify(metadata)], { type: 'application/json' })
-  const jsonUrl = await nftstorage.storeBlob(metadataBlob);
+	const metadataFile = path.join(__dirname, `${metadataFileName}`)
 
-  return formatIPFSUrl(jsonUrl);
+	fs.writeFileSync(metadataFile, JSON.stringify(metadata, null, 4), {
+		flag: 'w',
+	})
+
+	const metadataUploadReceipt = await irys.uploadFile(metadataFile)
+
+	return formatIrysUrl(metadataUploadReceipt.id)
 }
