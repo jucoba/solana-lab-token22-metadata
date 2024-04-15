@@ -21,7 +21,7 @@ export interface UploadOffChainMetadataInputs {
 	tokenExternalUrl: string
 	tokenAdditionalMetadata?: Record<string, string>
 	imagePath: string
-	metadataFileName: string
+	metadataPath: string
 }
 
 function formatIrysUrl(id: string) {
@@ -51,7 +51,7 @@ export async function uploadOffChainMetadata(
 		tokenExternalUrl,
 		imagePath,
 		tokenAdditionalMetadata,
-		metadataFileName,
+		metadataPath,
 	} = inputs
 
 	const irys = await getIrysArweave(payer.secretKey)
@@ -69,13 +69,11 @@ export async function uploadOffChainMetadata(
 		),
 	}
 
-	const metadataFile = path.join(__dirname, `${metadataFileName}`)
-
-	fs.writeFileSync(metadataFile, JSON.stringify(metadata, null, 4), {
+	fs.writeFileSync(metadataPath, JSON.stringify(metadata, null, 4), {
 		flag: 'w',
 	})
 
-	const metadataUploadReceipt = await irys.uploadFile(metadataFile)
+	const metadataUploadReceipt = await irys.uploadFile(metadataPath)
 
 	return formatIrysUrl(metadataUploadReceipt.id)
 }
