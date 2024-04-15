@@ -28,7 +28,7 @@ dotenv.config();
     metadataPath,
     tokenExternalUrl,
     tokenAdditionalMetadata,
-  },payer);
+  }, payer);
 
   await createNFTWithEmbeddedMetadata({
     payer,
