@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "ts-node src/index.ts",
+    "start": "npx esrun src/index.ts",
     "metadata-embedded": "ts-node src/embedded-metadata.ts",
     "metadata-pointer": "ts-node src/metadata-with-pointer.ts"
   },
@@ -31,6 +31,7 @@
     "bs58": "^5.0.0",
     "dotenv": "^16.0.0",
     "eslint": "^8.56.0",
+    "esrun": "^3.2.26",
     "nft.storage": "^7.1.1"
   }
 }
