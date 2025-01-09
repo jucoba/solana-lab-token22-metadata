@@ -1,13 +1,13 @@
 {
-    "name": "Cat NFT",
-    "symbol": "EMB",
-    "description": "This is a cat",
-    "external_url": "https://solana.com/",
-    "image": "https://gateway.irys.xyz/M56ZmLcU4R_eA2U7NctZr9yiIupi8V3F1IjiR400_cQ",
+    "name": "Cow NFT",
+    "symbol": "COOT",
+    "description": "This is a cow",
+    "external_url": "https://mootrack.com/",
+    "image": "https://gateway.irys.xyz/Eomsq33E1ryp8sSR5MTVm4BMeNz8pDDHf3ww3QyxnPRN",
     "attributes": [
         {
             "trait_type": "species",
-            "value": "Cat"
+            "value": "Cow"
         },
         {
             "trait_type": "breed",

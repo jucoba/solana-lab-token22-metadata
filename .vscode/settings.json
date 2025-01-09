@@ -1,5 +1,8 @@
 {
     "cSpell.words": [
         "nftstorage"
-    ]
+    ],
+    "npm-intellisense.packageSubfoldersIntellisense": true,
+    "npm-intellisense.scanDevDependencies": true,
+    "npm-intellisense.showBuildInLibs": true
 }
