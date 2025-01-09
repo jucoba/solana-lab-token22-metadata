@@ -48,6 +48,8 @@ const uintSig = await (
   }).sendAndConfirm(umi)
 ).signature;
 
+console.log('Signature:', uintSig);
+
 // const b64Sig = base58.deserialize(uintSig);
 // console.log(b64Sig);
 
