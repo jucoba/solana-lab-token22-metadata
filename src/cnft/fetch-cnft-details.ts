@@ -27,10 +27,8 @@ const assetId = '99PnXGH76E8e6rZhYyPpoxMaNCs3MYXwQERYAeb5jNuy';
 
 const umi_assetId = UMIPublicKey(assetId);
 
-// @ts-ignore
 const rpcAsset = await umi.rpc.getAsset(umi_assetId);
 console.log(rpcAsset);
-
 
 const assetObject = {
   interface: rpcAsset.interface,
