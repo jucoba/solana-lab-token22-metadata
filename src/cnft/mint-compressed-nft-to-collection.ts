@@ -54,7 +54,6 @@ console.log('Signature:', uintSig);
 // const b64Sig = base58.deserialize(uintSig);
 // console.log(b64Sig);
 
-
 const leaf: LeafSchema = await parseLeafFromMintToCollectionV1Transaction(umi, uintSig);
 console.log('Leaf:', leaf);
 const assetId = findLeafAssetIdPda(umi, {

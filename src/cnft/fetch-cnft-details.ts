@@ -12,7 +12,7 @@ const localKeypair = await getKeypairFromFile('mydevwallet.json');
 
 // convert to Umi compatible keypair
 const umiKeypair = umi.eddsa.createKeypairFromSecretKey(localKeypair.secretKey);
-const merkleTree = UMIPublicKey('FCkUibVvcqKL3yMnSqP32hBzex4UcmNoEwv4hT4JMuYp');
+const merkleTree = UMIPublicKey('7e65pLwGJSCv9z9NDTzDQdnMxWh5cMx1Jkdbhq5iNWU2');
 
 // load the MPL Bubblegum program, dasApi plugin and assign a signer to our umi instance
 umi.use(keypairIdentity(umiKeypair)).use(mplBubblegum()).use(dasApi());
@@ -23,7 +23,7 @@ umi.use(keypairIdentity(umiKeypair)).use(mplBubblegum()).use(dasApi());
 // })[0];
 
 //console.log('Asset ID:', assetId);
-const assetId = '99PnXGH76E8e6rZhYyPpoxMaNCs3MYXwQERYAeb5jNuy';
+const assetId = '7kqe8Ynxe46KfApV8bRYyKkLoKMjZMwdhhat6iPtVVjh';
 
 const umi_assetId = UMIPublicKey(assetId);
 

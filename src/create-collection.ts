@@ -28,8 +28,8 @@ console.log(`Creating collection...`);
 const collectionMint = generateSigner(umi);
 const transaction = await createNft(umi, {
   mint: collectionMint,
-  name: 'My Collection',
-  symbol: 'MC',
+  name: 'Mootrack Collection',
+  symbol: 'MOOTRACK',
   // https://developers.metaplex.com/token-metadata/token-standard#the-non-fungible-standard
   uri: 'https://raw.githubusercontent.com/solana-developers/professional-education/main/labs/sample-nft-collection-offchain-data.json',
   sellerFeeBasisPoints: percentAmount(0),
