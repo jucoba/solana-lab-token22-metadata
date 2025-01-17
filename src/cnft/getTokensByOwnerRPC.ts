@@ -8,7 +8,7 @@ const response = await fetch('https://devnet.helius-rpc.com/?api-key=23ee2927-8e
     id: 'text',
     method: 'getAssetsByOwner',
     params: {
-      ownerAddress: '47jJLDWDuTorFjq7KabD35yYVavmHTj36CMBABYjsKCo',
+      ownerAddress: '6GSpmTaNDUaYEicRZhd3VfbobsDxxNxJX7pz4dryX78M',
       options: {
         showFungible: false,
       },
